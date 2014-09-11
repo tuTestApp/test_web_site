@@ -1,0 +1,62 @@
+﻿@model Admin.Exam.WebService.Student
+
+@{
+    ViewBag.Title = "Редактирай";
+}
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        
+        <legend>Създай Студент</legend>
+
+
+
+        <div class="editor-label">
+            Факултетен номер
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FacultyNumber)
+            @Html.ValidationMessage("Факултетният номер е задължителено поле!")
+        </div>
+
+        <div class="editor-label">
+            Име:
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Firstname)
+            @Html.ValidationMessage("Името е задължителено поле!")
+        </div>
+        
+        <div class="editor-label">
+            Презиме:
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Middlename)
+            @Html.ValidationMessage("Презимето е задължителено поле!")
+        </div>
+        
+        <div class="editor-label">
+            Фамилия:
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Lastname)
+            @Html.ValidationMessage("Фамилия е задължителено поле!")
+        </div>
+
+        <p class="submit-btn">
+            <input type="submit" value="Създай" />
+        </p>
+    </fieldset>
+}
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

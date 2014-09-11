@@ -1,0 +1,315 @@
+﻿@model Admin.Exam.WebService.TestData
+
+@{
+    ViewBag.Title = "Тестове";
+}
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Редактирай Тест</legend>
+
+        @Html.HiddenFor(model => model.Test.Key)
+        
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="input-group">
+                    <span class="input-group-addon">@Html.Label("Име:")</span>
+                    @Html.TextBoxFor(model => model.Test.Name, new { @class = "form-control"})
+                    @Html.ValidationMessageFor(model => model.Test.Name)
+                </div>
+            </div>
+        
+            <div class="col-xs-6">
+                <div class="input-group">
+                    <span class="input-group-addon">@Html.Label("Ключ:")</span>
+                    @Html.TextBoxFor(model => model.Test.Passkey, new { @class = "form-control"})
+                    @Html.ValidationMessageFor(model => model.Test.Passkey)
+                </div>
+            </div>
+        </div>
+        <div class="row questions-table">
+            <div class="col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Въпроси:</div>
+                    <div class="panel-body">
+                        <ul class="list-unstyled list-qeustions">
+                            @if (Model.Questions != null && Model.Questions.Any())
+                            {
+                                for (int i = 0; i < Model.Questions.Length; i++)
+                                {
+                                    <li>
+                                        <div class="row">
+                                            @Html.HiddenFor(m => m.Questions[i].Key)
+                                            <div class="col-xs-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">@Html.Label("Въпрос:")</span>
+                                                    @Html.TextBoxFor(m => m.Questions[i].Text, new {@class = "form-control"})
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">@Html.Label("Тип:")</span>
+                                                    @{ var selectList = new SelectList(((List<SelectListItem>) ViewBag.QuestionTypes), "Value", "Text", Model.Questions[i].QuestionType.ToString());}
+                                                    @Html.DropDownListFor(m => m.Questions[i].QuestionType, selectList, new {@class = "form-control"})
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-2">
+                                                <td><a class="btn del-question" href="#">Изтрий</a></td>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <table class="table options-table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Отвовор</th>
+                                                            <th>Верен</th>
+                                                            <th>-</th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @for (int j = 0; j < Model.Questions[i].Options.Length; j++)
+                                                        {
+                                                            <tr>
+                                                                <td class="optionNum">@string.Format("{0}.", j + 1)</td>
+                                                                @Html.HiddenFor(m => Model.Questions[i].Options[j].Key)
+                                                                <td>@Html.EditorFor(m => Model.Questions[i].Options[j].Text)</td>
+                                                                <td>@Html.CheckBoxFor(m => Model.Questions[i].Options[j].Correct)</td>
+                                                                <td><a class="btn del-option" href="#">Изтрий</a></td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                                <div class="add"> <a class="btn addOption" href="#"><i class="ui-icon-plus"></i>Добави Отговор</a></div>
+
+                                            </div>
+                                        </div>
+
+                                    </li>
+                                }
+                            }
+                         
+                        </ul>
+                        <div class="add addQuestion"> <a class="btn" href="#"><i class="ui-icon-plus"></i>Добави Върпрос</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p class="submit-btn">
+            <input type="submit" value="Запази" />
+        </p>
+    </fieldset>
+}
+
+<div class="hidden"><!-- Prototypes -->
+    <li class="questionPrototype">
+        <div class="row">
+            <input id="Questions_|id|__Key" name="Questions[|id|].Key" type="hidden" value="00000000-0000-0000-0000-000000000000">
+            <div class="col-xs-6">
+                <div class="input-group">
+                    <span class="input-group-addon"><label for="">Въпрос:</label></span>
+                    <input class="form-control" id="Questions_|id|__Text" name="Questions[|id|].Text" type="text" value="Нов Въпрос">
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="input-group">
+                    <span class="input-group-addon"><label for="">Тип:</label></span>
+                    <select class="form-control" data-val="true" data-val-required="The QuestionType field is required." id="Questions_|id|__QuestionType" name="Questions[|id|].QuestionType">
+                        <option value="SingleChoice">Единт Отговор</option>
+                        <option value="MultipleChoice">Много Отговори</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <a class="btn del-question" href="#">Изтрий</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <table class="table options-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Отвовор</th>
+                            <th>Верен</th>
+                            <th>-</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="optionNum">1.</td>
+                            <input id="Questions_|id|__Options_0__Key" name="Questions[|id|].Options[0].Key" type="hidden" value="00000000-0000-0000-0000-000000000000">
+                            <td><input class="text-box single-line" id="Questions_|id|__Options_0__Text" name="Questions[|id|].Options[0].Text" type="text" value="Първа Опция"></td>
+                            <td><input data-val="true" data-val-required="The Correct field is required." id="Questions_|id|__Options_0__Correct" name="Questions[|id|].Options[0].Correct" type="checkbox" value="true"><input name="Questions[|id|].Options[0].Correct" type="hidden" value="false"></td>
+                            <td><a class="btn del-option" href="#">Изтрий</a></td>
+                        </tr>
+                        <tr>
+                            <td class="optionNum">2.</td>
+                            <input id="Questions_|id|__Options_1__Key" name="Questions[|id|].Options[1].Key" type="hidden" value="00000000-0000-0000-0000-000000000000">
+                            <td><input class="text-box single-line" id="Questions_|id|__Options_1__Text" name="Questions[|id|].Options[1].Text" type="text" value="Втора Опция"></td>
+                            <td><input data-val="true" data-val-required="The Correct field is required." id="Questions_|id|__Options_1__Correct" name="Questions[|id|].Options[1].Correct" type="checkbox" value="false"><input name="Questions[|id|].Options[1].Correct" type="hidden" value="false"></td>
+                            <td><a class="btn" href="#">Изтрий</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="add addOption" > <a class="btn" href="#"><i class="ui-icon-plus"></i>Добави Отговор</a></div>
+
+            </div>
+        </div>
+    </li>
+    <table>
+        <tr class="optionPrototype" >
+            <td class="optionNum"></td>
+            <input id="Questions_|qid|__Options_|oid|__Key" name="Questions[|qid|].Options[|oid|].Key" type="hidden" value="00000000-0000-0000-0000-000000000000">
+            <td><input class="text-box single-line valid" id="Questions_|qid|__Options_|oid|__Text" name="Questions[|qid|].Options[|oid|].Text" type="text" value="Нов Отговор"></td>
+            <td><input data-val="true" data-val-required="The Correct field is required." id="Questions_|qid|__Options_|oid|__Correct" name="Questions[|qid|].Options[|oid|].Correct" type="checkbox" value="true"><input name="Questions[|qid|].Options[|oid|].Correct" type="hidden" value="false"></td>
+            <td><a class="btn" href="#">Изтрий</a></td>
+        </tr>
+    </table>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    
+    function orderQuestions() {
+        var index = 0;
+        $('.list-qeustions li').each(function() {
+            var el = $(this);
+            var idRegex = /Questions_([0-9]+)_/g;
+            var nameRegex = /Questions\[[0-9]+\]/g;
+            el.find('input,select').each(function() {
+                var item = $(this);
+
+                if (item.prop("id")) {
+                    var id = item.prop("id").replace(idRegex, "Questions_" + index + "_");
+                    item.prop("id", id);
+                }
+
+                if (item.prop("name")) {
+                    var name = item.prop("name").replace(nameRegex, "Questions[" + index + "]");
+                    item.prop("name", name);
+                }
+            });
+
+            index++;
+        });
+    }
+
+    function orderOptions(table) {
+        var index = 0;
+        $(table).find('tbody tr').each(function () {
+            var el = $(this);
+            var idRegex = /Options_([0-9]+)_/g;
+            var nameRegex = /Options\[[0-9]+\]/g;
+            el.find('input').each(function () {
+                var item = $(this);
+
+                if (item.prop("id")) {
+                    var id = item.prop("id").replace(idRegex, "Options_" + index + "_");
+                    item.prop("id", id);
+                }
+
+                if (item.prop("name")) {
+                    var name = item.prop("name").replace(nameRegex, "Options[" + index + "]");
+                    item.prop("name", name);
+                }
+            });
+
+            el.find('.optionNum').text(++index + ".");
+        });
+    }
+
+    $(document).ready(function() {
+        $('.addQuestion').click(function(e) {
+            e.preventDefault();
+
+            var countRows = $('.list-qeustions > li').length;
+            var token = "|id|";
+
+            var question = $(".questionPrototype").clone(true);
+            question.removeClass("questionPrototype");
+
+            question.find('input,select').each(function() {
+                var item = $(this);
+
+                if (item.prop("id")) {
+                    var id = item.prop("id").replace(token, countRows);
+                    item.prop("id", id);
+                }
+
+                if (item.prop("name")) {
+                    var name = item.prop("name").replace(token, countRows);
+                    item.prop("name", name);
+                }
+            });
+
+            $('.list-qeustions').append(question);
+        });
+
+        $('.del-question').click(function (e) {
+            e.preventDefault();
+
+            $(this).closest('li').remove();
+            orderQuestions();
+        });
+
+        $('.del-option').click(function (e) {
+            e.preventDefault();
+
+            var table = $(this).closest('table');
+
+            $(this).closest('tr').remove();
+            orderQuestions();
+
+            orderOptions(table);
+        });
+
+        $('.addOption').click(function (e) {
+            e.preventDefault();
+
+            var name = $(this).closest('li').find('input').prop('id');
+            var pattern = /Questions_([0-9]+)_/;
+            var matches = pattern.exec(name);
+
+            var questionIndex = matches[1];
+
+            var option = $(".optionPrototype").clone(true);
+            option.removeClass("optionPrototype");
+
+            var countRows = $(this).closest('li').find('tbody').find('tr').length;
+            var questionToken = "|qid|";
+            var optionToken = "|oid|";
+
+            option.find('input').each(function () {
+                var item = $(this);
+
+                if (item.prop("id")) {
+                    var id = item.prop("id").replace(questionToken, questionIndex).replace(optionToken, countRows);
+                    item.prop("id", id);
+                }
+
+                if (item.prop("name")) {
+                    var name = item.prop("name").replace(questionToken, questionIndex).replace(optionToken, countRows);
+                    item.prop("name", name);
+                }
+            });
+
+            var numColumn = option.find(".optionNum");
+            numColumn.text((countRows + 1) + ".");
+
+            $(this).closest('li').find('tbody').append(option);
+        });
+    });
+</script>

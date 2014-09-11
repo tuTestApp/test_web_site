@@ -1,0 +1,9 @@
+﻿@model Admin.Models.ResultModel
+
+@{
+    ViewBag.Title = "Резултат";
+    var color = Model.Success ? "green" : "red";
+}
+
+    <h2 style="color:@color;">@Model.Message</h2>
+

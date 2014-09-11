@@ -1,0 +1,42 @@
+﻿@model Admin.Models.Students.StudentMarksModel
+
+@{
+    ViewBag.Title = "Оценки";
+}
+
+<h2>@string.Format("{0} {1} | {2}", Model.Student.Firstname, Model.Student.Lastname, Model.Student.FacultyNumber)</h2>
+
+<table id="marks-table">
+    <thead>
+        <tr>
+            <th>Тест</th>
+            <th>Оценка</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var mark in Model.Marks)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(m => mark.TestName)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => mark.Score)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    @Html.ActionLink("Обратно към списъка", "Index")
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#marks-table').dataTable({
+            "bFilter": false
+        });
+    });
+</script>
+

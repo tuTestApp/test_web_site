@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Admin.Exam.WebService.Student>
+
+@{
+    ViewBag.Title = "Студенти";
+}
+
+<h2>Списък Студенти</h2>
+
+<p>
+    @Html.ActionLink("Добави Студент", "Create")
+</p>
+<table id="students-table">
+    <thead>
+        <tr>
+            <th>Факултетен Номер</th>
+            <th>Име</th>
+            <th>Презиме</th>
+            <th>Фамилия</th>
+            <th> - </th>
+            <th> - </th>
+            <th> - </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => student.FacultyNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => student.Firstname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => student.Middlename)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => student.Lastname)
+                </td>
+                <td>
+                    @Html.ActionLink("Оценки", "Marks", new {id = student.Key})
+                </td>
+                <td>
+                    @Html.ActionLink("Редактирай", "Edit", new {id = student.Key})
+                </td>
+
+                <td>
+                    @Html.ActionLink("Изтрий", "Delete", new {id = student.Key})
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<script>
+    $(document).ready(function() {
+        $('#students-table').dataTable({
+            "aoColumnDefs": [{ 'bSortable': false, 'aTargets': [4,5,6] }]
+        });
+    });
+</script>
