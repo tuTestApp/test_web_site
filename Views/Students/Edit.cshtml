@@ -10,14 +10,13 @@
 
     <fieldset>
         
-        <legend>Създай Студент</legend>
-
-
-
+        <legend>Редактирай Студент</legend>
+            
         <div class="editor-label">
-            Факултетен номер
+            Факултетен номер:
         </div>
         <div class="editor-field">
+            @Html.HiddenFor(m => m.Key)
             @Html.EditorFor(model => model.FacultyNumber)
             @Html.ValidationMessage("Факултетният номер е задължителено поле!")
         </div>
@@ -47,14 +46,14 @@
         </div>
 
         <p class="submit-btn">
-            <input type="submit" value="Създай" />
+            <input type="submit" value="Готово" />
         </p>
     </fieldset>
 }
 
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Обратно към списъка", "Index")
 </div>
 
 @section Scripts {
