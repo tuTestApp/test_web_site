@@ -13,6 +13,7 @@
     <thead>
         <tr>
             <th>Име</th>
+            <th>Изпитни Въпроси</th>
             <th> - </th>
             <th> - </th>
         </tr>
@@ -23,6 +24,16 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => test.Name)
+                </td>
+                 <td>
+                    @if (test.QuestionsCount.HasValue)
+                    {
+                        @test.QuestionsCount
+                    }
+                    else
+                    {
+                        @:Всики Въпроси
+                    }
                 </td>
                 <td>
                     @Html.ActionLink("Редактирай", "Edit", new { id=test.Key })
@@ -39,7 +50,7 @@
 <script>
     $(document).ready(function() {
         $('#tests-table').dataTable({
-            "aoColumnDefs": [{ 'bSortable': false, 'aTargets': [1,2] }]
+            "aoColumnDefs": [{ 'bSortable': false, 'aTargets': [2,3] }]
         });
     });
 </script>

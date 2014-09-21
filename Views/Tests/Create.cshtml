@@ -30,6 +30,21 @@
                 </div>
             </div>
         </div>
+         <div class="row" style="margin-top:10px;">
+            <div class="col-xs-6">
+                <div class="input-group">
+                    <span class="input-group-addon">@Html.Label("Брой Въпроси:")</span>
+                    @Html.TextBoxFor(model => model.Test.QuestionsCount, new { @class = "form-control", id="questions-count"})
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="input-group">
+                    <input type="checkbox" checked="@(!Model.Test.QuestionsCount.HasValue)" style="margin:3px;" id="all-question" />
+                    @Html.Label("Всички върпси в теста")
+                    @Html.HiddenFor(m => m.Test.QuestionsCountSpecified, new { id = "questions-count-specified"})
+                </div>
+            </div>
+        </div>
         <div class="row questions-table">
             <div class="col-xs-12">
                 <div class="panel panel-default">
@@ -231,7 +246,35 @@
         });
     }
 
+    function checkCountQuestions() {
+        if ($('#all-question').is(':checked')) {
+
+            $('#questions-count-specified').val('');
+
+            $('#questions-count').val('');
+            $('#questions-count').prop('disabled', true);
+
+
+
+        } else {
+
+            $('#questions-count-specified').val('true');
+
+            var countQuestions = $('.list-qeustions li').length;
+
+            if (!$('#questions-count').val()) {
+                $('#questions-count').val(countQuestions);
+            }
+            $('#questions-count').prop('disabled', false);
+
+        }
+    }
+
     $(document).ready(function () {
+
+        checkCountQuestions();
+        $('#all-question').change(checkCountQuestions);
+
         $('.addQuestion').click(function (e) {
             e.preventDefault();
 
